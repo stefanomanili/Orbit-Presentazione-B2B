@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit — Presentazione B2B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="icon" href="images/favicon.ico">
+<meta name="theme-color" content="#F7F5F0">
+<style>
+  :root {
+    --red: #9C2B1F;
+    --green: #2F4A3C;
+    --blue: #496F88;
+    --ochre: #B8862E;
+    --ink: #191C16;
+    --cream: #F7F5F0;
+    --paper: #FFFFFF;
+    --line: #DDD7C9;
+    --muted: #6E7268;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--cream);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+  }
+  .slide {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 7vh 8vw;
+    position: relative;
+    background: var(--cream);
+  }
+  .slide-inner { width: 100%; max-width: 1180px; margin: 0 auto; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .28em;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--red);
+    margin: 0 0 22px 0;
+  }
+  h1 { font-size: clamp(32px, 4.6vw, 54px); line-height: 1.15; margin: 0 0 22px 0; font-weight: 300; letter-spacing: -.01em; }
+  h2 { font-size: clamp(24px, 3.1vw, 36px); line-height: 1.2; margin: 0 0 20px 0; font-weight: 300; }
+  p.lead { font-size: clamp(16px, 1.4vw, 18px); color: var(--muted); line-height: 1.6; max-width: 720px; margin: 0 0 8px 0; font-weight: 300; }
+  .dark { background: var(--ink); color: var(--cream); }
+  .dark .eyebrow { color: var(--ochre); }
+  .dark p.lead { color: #B9BDB2; }
+  .brandred { background: var(--red); color: #fff; }
+  .brandred .eyebrow { color: #F2C6BC; }
+  .brandred p.lead { color: #F3D9D2; }
+
+  /* nav dots */
+  .nav {
+    position: fixed; right: 26px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 12px; z-index: 50;
+  }
+  .nav button {
+    width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--ink);
+    background: transparent; opacity: 0.4; cursor: pointer; padding: 0;
+  }
+  .nav button.active { opacity: 1; background: var(--ink); }
+
+  .arrows {
+    position: fixed; bottom: 26px; right: 26px; display: flex; gap: 10px; z-index: 50;
+  }
+  .arrows button {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--ink);
+    background: rgba(255,255,255,0.7); cursor: pointer; font-size: 15px; color: var(--ink);
+    transition: all .2s ease;
+  }
+  .arrows button:hover { background: var(--ink); color: var(--cream); }
+
+  .logo-mark { height: 40px; }
+  .logo-mark.big { height: 84px; }
+
+  .btn-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:15px 34px; font-size:12px; font-weight:500;
+    letter-spacing:.14em; text-transform:uppercase;
+    cursor:pointer; border:1px solid currentColor; background:none;
+    color:inherit; transition:all .2s ease; text-decoration:none;
+  }
+  .brandred .btn-cta:hover{ background:#fff; color:var(--red); }
+
+  /* ring graphic — motivo decorativo, sostituisce le foto prodotto */
+  .ring-graphic{ display:block; }
+
+  /* Cover */
+  #s1 { text-align: center; }
+  #s1 .product-name{ font-size: clamp(38px, 5.5vw, 64px); font-weight: 300; color: var(--ink); margin-top: 46px; letter-spacing: -.01em; }
+  #s1 .tagline { font-size: clamp(14px, 1.4vw, 17px); letter-spacing: .22em; text-transform:uppercase; color: var(--red); font-weight: 500; margin-top: 14px; }
+  #s1 .badge {
+    position: absolute; top: 30px; left: 8vw; font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted); border: 1px solid var(--line);
+    padding: 7px 16px;
+  }
+  #s1 .ring-graphic{ width:220px; margin:44px auto 0; }
+
+  /* Problem slide */
+  .lids-row { display: flex; align-items: flex-end; gap: 26px; margin: 40px 0 10px; justify-content:center; }
+  .lid-circle {
+    border-radius: 50%; border: 1.4px solid var(--ink); opacity: 0.25;
+  }
+  .lid-circle.s { width: 90px; height: 90px; }
+  .lid-circle.m { width: 130px; height: 130px; }
+  .lid-circle.l { width: 170px; height: 170px; }
+  .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; width: 100%; }
+  .pain-card { border-top: 1px solid var(--line); padding-top: 20px; }
+  .pain-card .num { color: var(--red); font-weight: 500; font-size: 12px; letter-spacing: .18em; }
+  .pain-card p { margin: 10px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+  /* Novelty slide */
+  #s3 .grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; width: 100%; }
+  #s3 .claim { font-size: clamp(28px, 3.6vw, 42px); font-weight: 300; line-height: 1.2; }
+  #s3 .ring-graphic{ width:100%; max-width:300px; margin:0 auto; }
+  .stack-list { list-style: none; padding: 0; margin: 30px 0 0; }
+  .stack-list li { padding: 12px 0 12px 30px; position: relative; font-size: 15.5px; color: #F3D9D2; border-top: 1px solid rgba(255,255,255,0.2); }
+  .stack-list li:before { content: "→"; position: absolute; left: 0; color: #fff; font-weight: 500; }
+
+  /* Mechanism slide */
+  #s4 .grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 50px; align-items: center; width: 100%; }
+  #s4 .mech-graphic{ width:100%; max-width:300px; margin:0 auto; }
+  .steps-v { display: flex; flex-direction: column; gap: 22px; margin-top: 26px; }
+  .step-v { display: flex; gap: 18px; align-items: flex-start; }
+  .step-v .n {
+    flex: none; width: 34px; height: 34px; border-radius: 50%; border:1px solid var(--ink);
+    display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 13px; color:var(--ink);
+  }
+  .step-v p { margin: 5px 0 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+  .step-v strong { display: block; font-size: 16px; font-weight:500; color: var(--ink); }
+
+  /* Space saving slide */
+  #s5 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; width: 100%; margin-top: 26px; align-items: end; }
+  .compare-col { text-align: center; }
+  .compare-col .label { font-weight: 500; margin-top: 16px; font-size: 14.5px; }
+  .compare-col .sub { color: #B9BDB2; font-size: 13px; }
+  .trad-stack { display: flex; flex-direction: column-reverse; align-items: center; gap: 7px; }
+  .trad-stack .lid { width: 220px; height: 22px; border-radius: 50%; border: 1.4px solid #B9BDB2; }
+  .trad-stack .lid:nth-child(2) { width: 190px; }
+  .trad-stack .lid:nth-child(3) { width: 160px; }
+  .sat-stack{ display:flex; align-items:center; justify-content:center; height:88px; }
+  .sat-stack .thin-ring{ width:220px; height:14px; border-radius:50%; border:1.4px solid var(--red); }
+  .stat-row { display: flex; gap: 50px; margin-top: 50px; justify-content: center; flex-wrap:wrap; }
+  .stat { text-align: center; }
+  .stat .val { font-size: 36px; font-weight: 400; color: var(--red); }
+  .stat .cap { font-size: 12.5px; color: #B9BDB2; max-width: 170px; margin-top: 6px; }
+
+  /* Multiuse slide */
+  #s6 .grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 50px; align-items: center; width: 100%; }
+  #s6 .ring-graphic{ width:100%; max-width:260px; margin:0 auto; }
+  .use-list { display: flex; flex-direction: column; gap: 24px; margin-top: 6px; }
+  .use-item { display: flex; gap: 18px; }
+  .use-item .ic { flex: none; width: 40px; height: 40px; border-radius: 50%; border:1px solid var(--green); color: var(--green); display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .use-item strong { display: block; font-size: 16px; font-weight:500; }
+  .use-item p { margin: 5px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+  /* Colors slide */
+  .swatch-row { display: flex; gap: 40px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
+  .swatch { text-align: center; }
+  .swatch svg { width: 90px; height: 90px; }
+  .swatch .name { margin-top: 14px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .combo-note { text-align:center; color: var(--muted); font-size: 14.5px; margin-top: 34px; max-width: 620px; }
+
+  /* Quality slide */
+  .spec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px 44px; margin-top: 30px; width: 100%; }
+  .spec { border-top: 1px solid var(--ochre); padding-top: 16px; }
+  .spec strong { display: block; font-size: 15.5px; font-weight:500; margin-bottom: 6px; }
+  .spec p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+  /* Why B2B slide */
+  .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; margin-top: 28px; }
+  .why-card { border-top: 1px solid rgba(255,255,255,0.22); padding-top: 18px; }
+  .why-card strong { display: block; font-size: 16px; font-weight:500; margin-bottom: 8px; color: var(--cream); }
+  .why-card p { margin: 0; color: #B9BDB2; font-size: 14px; line-height: 1.6; }
+
+  /* Closing */
+  #s10 { text-align: center; }
+  #s10 .contact { margin-top: 30px; font-size: 14.5px; color: #F3D9D2; }
+  #s10 .cta { margin-top: 32px; }
+
+  @media (max-width: 860px) {
+    #s3 .grid, #s4 .grid, #s6 .grid, #s5 .compare { grid-template-columns: 1fr; }
+    .pain-grid, .why-grid, .spec-grid { grid-template-columns: 1fr; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="navDots"></nav>
+<div class="arrows">
+  <button id="prevBtn" aria-label="Precedente">↑</button>
+  <button id="nextBtn" aria-label="Successivo">↓</button>
+</div>
+
+<section class="slide" id="s1">
+  <span class="badge">Presentazione riservata · Partner commerciali</span>
+  <div class="slide-inner" style="text-align:center;">
+    <img src="images/logo.png" class="logo-mark big" alt="Orbit by 4Space">
+    <div class="eyebrow" style="margin-top:36px;">Made in Italy · Design originale</div>
+    <div class="product-name" style="margin-top:0;">Orbit</div>
+    <div class="tagline">Space is the new luxury.</div>
+    <svg class="ring-graphic" viewBox="0 0 300 300">
+      <circle cx="150" cy="150" r="130" fill="none" stroke="#2F4A3C" stroke-width="1.4"></circle>
+      <circle cx="150" cy="150" r="92" fill="none" stroke="#2F4A3C" stroke-width="1.4" opacity="0.45"></circle>
+      <circle cx="150" cy="150" r="20" fill="#9C2B1F"></circle>
+    </svg>
+  </div>
+</section>
+
+<section class="slide" id="s2">
+  <div class="slide-inner">
+    <div class="eyebrow">Il problema</div>
+    <h2>Ogni pentola ha bisogno del suo coperchio.</h2>
+    <p class="lead">Cucine professionali e domestiche accumulano coperchi di diametri diversi: difficili da riporre, costosi da produrre, ingombranti da trasportare.</p>
+    <div class="lids-row">
+      <div class="lid-circle s"></div>
+      <div class="lid-circle m"></div>
+      <div class="lid-circle l"></div>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card"><div class="num">01</div><p>Più referenze a magazzino per coprire le stesse esigenze di cottura.</p></div>
+      <div class="pain-card"><div class="num">02</div><p>Spazio a scaffale e in dispensa moltiplicato per il numero di pezzi.</p></div>
+      <div class="pain-card"><div class="num">03</div><p>Più imballaggio, più trasporto, più emissioni per ogni set venduto.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide brandred" id="s3">
+  <div class="slide-inner">
+    <div class="grid">
+      <div>
+        <div class="eyebrow">La novità</div>
+        <div class="claim">Un oggetto di design unico, disegnato e prodotto in Italia, che oggi non esiste altrove al mondo.</div>
+        <ul class="stack-list">
+          <li>Design e produzione interamente Made in Italy</li>
+          <li>1 coperchio centrale + 2 anelli magnetici intercambiabili</li>
+          <li>3 diametri di copertura, 1 solo articolo a scaffale</li>
+          <li>Aggancio magnetico sequenziale: nessuna combinazione complessa</li>
+          <li>Design brevettabile, protetto su marchio, modello e brevetto</li>
+        </ul>
+      </div>
+      <div>
+        <svg class="ring-graphic" viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="130" fill="none" stroke="#ffffff" stroke-width="1.4"></circle>
+          <circle cx="150" cy="150" r="92" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"></circle>
+          <circle cx="150" cy="150" r="20" fill="#ffffff"></circle>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s4">
+  <div class="slide-inner">
+    <div class="eyebrow">Come funziona</div>
+    <h2>Il meccanismo magnetico</h2>
+    <div class="grid">
+      <div>
+        <svg class="mech-graphic" viewBox="0 0 300 300">
+          <circle cx="150" cy="110" r="70" fill="none" stroke="#2F4A3C" stroke-width="1.4"></circle>
+          <circle cx="150" cy="220" r="46" fill="none" stroke="#9C2B1F" stroke-width="1.4"></circle>
+          <line x1="150" y1="180" x2="150" y2="174" stroke="#6E7268" stroke-width="1.4"></line>
+        </svg>
+      </div>
+      <div class="steps-v">
+        <div class="step-v">
+          <div class="n">1</div>
+          <div><strong>Magneti nel coperchio centrale</strong><p>Una struttura interna a ragnatela ("ragno") alloggia e blocca i magneti in posizione durante lo stampaggio a iniezione del silicone.</p></div>
+        </div>
+        <div class="step-v">
+          <div class="n">2</div>
+          <div><strong>Disco in acciaio negli anelli</strong><p>Ogni anello ("extender") contiene un disco in acciaio annegato nel silicone: nessun magnete esterno, nessun rischio di smagnetizzazione.</p></div>
+        </div>
+        <div class="step-v">
+          <div class="n">3</div>
+          <div><strong>Aggancio singolo e sequenziale</strong><p>Gli anelli si agganciano uno alla volta — mai insieme — per una tenuta stabile e un utilizzo intuitivo, senza incastri da allineare.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide dark" id="s5">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="eyebrow">Il vantaggio</div>
+    <h2>Lo spazio, il nostro obiettivo.</h2>
+    <p class="lead" style="margin:0 auto;">Un solo prodotto sostituisce tre coperchi tradizionali: meno spazio in produzione, in magazzino e in cucina.</p>
+    <div class="compare">
+      <div class="compare-col">
+        <div class="trad-stack">
+          <div class="lid"></div>
+          <div class="lid"></div>
+          <div class="lid"></div>
+        </div>
+        <div class="label">3 coperchi tradizionali</div>
+        <div class="sub">3 referenze, 3 imballaggi, 3 volte l'ingombro</div>
+      </div>
+      <div class="compare-col">
+        <div class="sat-stack"><div class="thin-ring"></div></div>
+        <div class="label">1 Orbit</div>
+        <div class="sub">1 referenza, 1 imballo, profilo estremamente sottile</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="val">3 → 1</div><div class="cap">Referenze a scaffale per coprire 3 diametri</div></div>
+      <div class="stat"><div class="val">−66%</div><div class="cap">Volume di stoccaggio stimato rispetto a 3 coperchi separati</div></div>
+      <div class="stat"><div class="val">↓ CO₂</div><div class="cap">Meno materiale, meno imballaggio, meno trasporto</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s6">
+  <div class="slide-inner">
+    <div class="eyebrow">Non solo un coperchio</div>
+    <h2>Un accessorio, tre funzioni.</h2>
+    <div class="grid">
+      <div>
+        <svg class="ring-graphic" viewBox="0 0 300 300">
+          <circle cx="150" cy="150" r="130" fill="none" stroke="#2F4A3C" stroke-width="1.4"></circle>
+          <circle cx="150" cy="150" r="92" fill="none" stroke="#2F4A3C" stroke-width="1.4" opacity="0.45"></circle>
+          <circle cx="150" cy="150" r="20" fill="#9C2B1F"></circle>
+        </svg>
+      </div>
+      <div class="use-list">
+        <div class="use-item">
+          <div class="ic">1</div>
+          <div><strong>Coperchio</strong><p>Copre pentole e padelle di tre diametri differenti con un solo prodotto.</p></div>
+        </div>
+        <div class="use-item">
+          <div class="ic">2</div>
+          <div><strong>Sottopentola</strong><p>Gli anelli, in silicone alimentare resistente al calore, si usano anche come appoggiapentola.</p></div>
+        </div>
+        <div class="use-item">
+          <div class="ic">3</div>
+          <div><strong>Paraschizzi</strong><p>Anche togliendo il disco centrale, l'anello resta agganciato al bordo della pentola: la sua altezza basta a contenere gli schizzi di un sugo che sobbolle a lungo, come un ragù, lasciando comunque uscire il vapore.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="s7">
+  <div class="slide-inner" style="text-align:center;">
+    <div class="eyebrow">Personalizzabile</div>
+    <h2>Un sistema, infinite combinazioni di colore.</h2>
+    <p class="lead" style="margin:0 auto;">Coperchio centrale e anelli possono essere abbinati in colori diversi: un'opportunità di differenziazione a scaffale e per linee private label.</p>
+    <div class="swatch-row">
+      <div class="swatch">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#9C2B1F" stroke-width="9"/><circle cx="50" cy="50" r="24" fill="#9C2B1F"/></svg>
+        <div class="name">Bordeaux</div>
+      </div>
+      <div class="swatch">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#2F4A3C" stroke-width="9"/><circle cx="50" cy="50" r="24" fill="#2F4A3C"/></svg>
+        <div class="name">Verde scuro</div>
+      </div>
+      <div class="swatch">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#496F88" stroke-width="9"/><circle cx="50" cy="50" r="24" fill="#496F88"/></svg>
+        <div class="name">Avio scuro</div>
+      </div>
+      <div class="swatch">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="#B8862E" stroke-width="9"/><circle cx="50" cy="50" r="24" fill="#B8862E"/></svg>
+        <div class="name">Ocra</div>
+      </div>
+    </div>
+    <p class="combo-note">Esempio: coperchio verde scuro con anelli bordeaux e avio scuro — o qualsiasi altra combinazione richiesta dal cliente.</p>
+  </div>
+</section>
+
+<section class="slide" id="s8">
+  <div class="slide-inner">
+    <div class="eyebrow">Qualità e sicurezza</div>
+    <h2>Pensato per la cucina, costruito per durare.</h2>
+    <div class="spec-grid">
+      <div class="spec"><strong>Silicone alimentare certificato MOCA</strong><p>Tutti gli elementi sono realizzati in silicone LSR alimentare, idoneo al contatto con gli alimenti: garantisce resistenza termica e sicurezza alimentare.</p></div>
+      <div class="spec"><strong>Resistente alle alte temperature</strong><p>Il silicone riduce la trasmissione del calore: maneggevole anche a caldo, senza bruciarsi.</p></div>
+      <div class="spec"><strong>Nessun metallo a contatto con il cibo</strong><p>Magneti e disco in acciaio sono completamente annegati nel silicone durante lo stampaggio.</p></div>
+      <div class="spec"><strong>Design anti-ventosa e sfiato vapore</strong><p>Rilievi dedicati evitano l'effetto ventosa; un foro di sfiato lascia uscire il vapore in cottura.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide dark" id="s9">
+  <div class="slide-inner">
+    <div class="eyebrow">Perché sceglierlo</div>
+    <h2>Un'opportunità per il vostro assortimento.</h2>
+    <div class="why-grid">
+      <div class="why-card"><strong>Meno referenze, più margine</strong><p>Un solo SKU copre le vendite di tre prodotti distinti: meno capitale immobilizzato a magazzino.</p></div>
+      <div class="why-card"><strong>Storytelling forte per il consumatore</strong><p>Un oggetto di design italiano, riconoscibile e made in Italy: "il coperchio che non esiste altrove al mondo".</p></div>
+      <div class="why-card"><strong>Sostenibilità concreta</strong><p>Meno plastica, meno imballaggio, meno trasporto rispetto a tre coperchi separati.</p></div>
+      <div class="why-card"><strong>Esclusività tutelata</strong><p>Prodotto in fase di deposito su marchio, modello di utilità, design e brevetto d'invenzione.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide brandred" id="s10">
+  <div class="slide-inner">
+    <img src="images/logo.png" class="logo-mark" style="filter:brightness(0) invert(1); margin-bottom:30px;" alt="Orbit by 4Space">
+    <h2 style="max-width:700px;margin:0 auto 10px;">Space is the new luxury.</h2>
+    <p class="lead" style="margin:0 auto;">Forspace Srl — Orbit, il coperchio modulare magnetico. Design originale, made in Italy.</p>
+    <div class="contact">Per campioni, condizioni commerciali e disponibilità: info@forspace.it</div>
+    <a href="mailto:info@forspace.it?subject=Richiesta%20campione%20Orbit" class="btn-cta cta">Richiedi un campione</a>
+  </div>
+</section>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const nav = document.getElementById('navDots');
+  slides.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.addEventListener('click', () => s.scrollIntoView({behavior:'smooth'}));
+    nav.appendChild(b);
+  });
+  const dots = Array.from(nav.children);
+
+  function currentIndex() {
+    let idx = 0, best = Infinity;
+    slides.forEach((s, i) => {
+      const d = Math.abs(s.getBoundingClientRect().top);
+      if (d < best) { best = d; idx = i; }
+    });
+    return idx;
+  }
+
+  function updateDots() {
+    const idx = currentIndex();
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  document.body.addEventListener('scroll', () => window.requestAnimationFrame(updateDots));
+  updateDots();
+
+  function go(delta) {
+    const idx = Math.min(slides.length - 1, Math.max(0, currentIndex() + delta));
+    slides[idx].scrollIntoView({behavior:'smooth'});
+  }
+  document.getElementById('prevBtn').addEventListener('click', () => go(-1));
+  document.getElementById('nextBtn').addEventListener('click', () => go(1));
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
+    if (['ArrowUp','ArrowLeft','PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+  });
+</script>
+</body>
+</html>
